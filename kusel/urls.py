@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from kusel import views as k_views
+from projects import views as p_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', k_views.home_page, name='home') 
 ]

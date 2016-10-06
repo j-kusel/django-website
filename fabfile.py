@@ -1,18 +1,22 @@
 from fabric.api import abort, cd, env, lcd, local, prefix, run, settings
 from fabric.contrib.console import confirm
 from contextlib import contextmanager as _contextmanager
+from os import path
+import re
 
-projname = 'kusel'
-dirname = 'website'
+pathname = re.sub('\/fabfile.py$', '', path.realpath(__file__))
+projname = re.findall('\/([a-zA-Z]*|\d*)/?$', pathname)[0]
 envname = 'site'
 
-env.directory = '/home/pi/python/{}'.format(dirname)
-env.activate = 'source /home/pi/python/{}/{}/bin/activate'.format(dirname, envname)
+env.directory = pathname
+env.activate = '. {}/../{}/bin/activate'.format(pathname, envname)
 env.colorize_errors = True
 
 apps = [
     'blog',
+    'projects',
 ]
+apps.extend(['admin','auth','contenttypes','sessions'])
 
 local_shell = '/bin/bash'
 
@@ -38,15 +42,14 @@ def push():
 
 def prepare_deployment(branch_name):
     with virtualenv():
-        with lcd(projname):
-            test()
-            commit()
-            push()
+        test()
+        commit()
+        push()
 
 def deploy():
     with virtualenv():
-        with lcd(projname):
-            run('git pull')
+        run('git pull')
+        with settings(warn_only=True):                
             for a in apps:
                 run('./manage.py migrate {}'.format(a))
-            run('./manage.py runserver')
+        run('./manage.py runserver')
