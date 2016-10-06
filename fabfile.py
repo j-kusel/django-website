@@ -46,10 +46,14 @@ def prepare_deployment(branch_name):
         commit()
         push()
 
+def run_server(host='127.0.0.1', port='8000'):
+    with virtualenv():
+        run('./manage.py runserver {}:{}'.format(host, port))
+
 def deploy():
     with virtualenv():
         run('git pull')
         with settings(warn_only=True):                
             for a in apps:
                 run('./manage.py migrate {}'.format(a))
-        run('./manage.py runserver')
+    run_server()
