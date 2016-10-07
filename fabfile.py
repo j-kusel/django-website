@@ -16,7 +16,6 @@ apps = [
     'blog',
     'projects',
 ]
-apps.extend(['admin','auth','contenttypes','sessions'])
 
 local_shell = '/bin/bash'
 
@@ -54,6 +53,6 @@ def deploy():
     with virtualenv():
         run('git pull')
         with settings(warn_only=True):                
-            for a in apps:
+            for a in (apps + ['admin','auth','contenttypes','sessions']):
                 run('./manage.py migrate {}'.format(a))
     run_server()

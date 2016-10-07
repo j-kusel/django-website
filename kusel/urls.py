@@ -20,5 +20,6 @@ from projects import views as p_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', k_views.home_page, name='home') 
+    url(r'^$', k_views.home_page, name='home'),
+    url(r'^bio/', k_views.bio_page, name='bio')
 ]
