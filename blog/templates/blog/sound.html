@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<html>
+  <head>
+    <title>J JsR DoY N KuS EnL LdE</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bio.css' %}">
+  </head>
+  <body>
+    <div class='page'>
+      <div class='col1'>
+        <div class='bot'>
+          <h3>bio</h3>
+        </div>
+      </div>
+      <div class='mainbox'>
+        {% for p in proj %}
+          <h3>{{ proj.name }}</h3>
+        {% endfor %}
+      </div>
+      <div class='col3'>
+      </div>
+    </div>
+  </body>
+</html> 
