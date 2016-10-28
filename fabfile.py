@@ -1,4 +1,5 @@
 from fabric.api import abort, cd, env, lcd, local, prefix, run, settings
+from fabric.contrib import project
 from fabric.contrib.console import confirm
 from fabric.contrib.files import append, exists, sed
 from contextlib import contextmanager as _contextmanager
@@ -28,6 +29,10 @@ def virtualenv():
     with cd(env.directory):
         with prefix(env.activate):
             yield
+
+def e(name='production'):
+    env.update(environments[name])
+    env.environment = name
 
 def test():
     with settings(warn_only=True):
@@ -114,3 +119,12 @@ def deploy():
             for a in (apps + ['admin','auth','contenttypes','sessions']):
                 run('./manage.py migrate {}'.format(a))
     run_server()
+
+def static_server(remote='staticfiles/'):
+    env.hosts = ['192.168.1.150',]
+    source_folder = path.dirname(path.abspath(__file__))
+    static_folder = path.join(source_folder, 'static/')
+    with lcd(source_folder):
+        with prefix('. ../virtualenv/bin/activate'):
+            local('python3 manage.py collectstatic')
+            project.rsync_project(remote_dir=remote, local_dir=static_folder)
