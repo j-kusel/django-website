@@ -100,7 +100,7 @@ def _update_settings(source):
     # CHANGE STATIC_ROOT / MEDIA_ROOT PATHS
     run(r"sudo sed -i.bak -r -e 's/STATIC_ROOT =.*$/STATIC_ROOT = os.path.join(BASE_DIR, '\''..\/static'\'')/g' {}".format(settings_path))
     append(settings_path, "MEDIA_URL = '/media/'", use_sudo=True)
-    append(settings_path, "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')", use_sudo=True)
+    append(settings_path, "MEDIA_ROOT = os.path.join(BASE_DIR, '../media')", use_sudo=True)
 
     # CHANGE DATABASES
     sudo(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''root'\'', '\''PASSWORD'\'': '\''raspberry'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},/g' %s" % (env.proj, MYSQL_HOST, settings_path))
