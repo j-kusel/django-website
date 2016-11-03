@@ -207,8 +207,7 @@ def _migrate_static(source):
     # COLLECTSTATIC AND SYNC MEDIA
     # static_new = env.deploy_dir + '/../static/'
     # static = path.join(source, 'static/')
-    with virtualenv(source):
-        run('python3 manage.py collectstatic')
+    sudo('{}/bin/python3 manage.py collectstatic'.format(env.venv_dir))
         # project.rsync_project(remote_dir=static_new, local_dir=static)
 
 #def sedtest():
