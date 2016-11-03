@@ -194,8 +194,8 @@ def deploy():
 @roles('mediaserver')
 def _migrate_static(source):
     # INSTALL RSYNC ON LOCAL AND MEDIA MACHINES
-    local('apt-get -y install rsync')
-    run('apt-get -y install rsync')
+    local('sudo apt-get -y install rsync')
+    sudo('apt-get -y install rsync')
 
     # COLLECTSTATIC AND SYNC MEDIA
     static_new = env.deploy_dir + '/../static/'
