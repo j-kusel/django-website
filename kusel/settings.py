@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'projects',
-    'mod_wsgi.server',
 ]
 
 MIDDLEWARE = [
