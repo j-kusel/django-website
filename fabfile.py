@@ -120,7 +120,10 @@ def _update_virtualenv(source):
         sudo('pip install -U pip')
         sudo('pip install virtualenv')
         sudo('virtualenv -p {} {}'.format(PYTHON, env.venv_dir))
-    sudo('{}/bin/pip install -r {}/requirements.txt'.format(env.venv_dir, source))
+    # CHANGE VIRTUALENV OWNERSHIP
+    sudo('chown -R {0}:{0} {1}/'.format(env.user, env.venv_dir))
+
+    run('{}/bin/pip install -r {}/requirements.txt'.format(env.venv_dir, source))
 
 @roles('dbserver')
 def _config_mysql():
