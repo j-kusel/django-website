@@ -63,7 +63,7 @@ def migrate():
     _update_database(env.source_folder)
 
     local_manage = path.dirname(path.realpath(__file__))
-    _migrate_static(local_manage)
+    _migrate_static(env.source_folder)
     #_run_server(source_folder)
 
 @roles('webserver')
@@ -198,16 +198,15 @@ def deploy():
 @roles('mediaserver')
 def _migrate_static(source):
     # INSTALL RSYNC ON LOCAL AND MEDIA MACHINES
-    local('sudo apt-get -y install rsync')
-    sudo('apt-get -y install rsync')
+    # local('sudo apt-get -y install rsync')
+    # sudo('apt-get -y install rsync')
 
     # COLLECTSTATIC AND SYNC MEDIA
-    static_new = env.deploy_dir + '/../static/'
-    static = path.join(source, 'static/')
-    with lcd(source):
-        with prefix('. ../{}/bin/activate'.format(LOCALVENV)):
-            local('python3 manage.py collectstatic')
-            project.rsync_project(remote_dir=static_new, local_dir=static)
+    # static_new = env.deploy_dir + '/../static/'
+    # static = path.join(source, 'static/')
+    with virtualenv(source):
+        run('python3 manage.py collectstatic')
+        # project.rsync_project(remote_dir=static_new, local_dir=static)
 
 #def sedtest():
     #sed('/home/pi/python/website/kusel/sedtest.txt',
