@@ -66,14 +66,14 @@ def migrate():
 def _create_directory_structure_if_necessary(deploy_dir):
     sudo('mkdir -p {}'.format(deploy_dir))
     for subfolder in ('static', 'media', env.venv, 'source'):
-        run('mkdir -p {}/{}'.format(deploy_dir, subfolder))
+        sudo('mkdir -p {}/{}'.format(deploy_dir, subfolder))
 
 @roles('webserver')
 def _pull_source(source):
     if exists(source + '/.git'):
-        run('cd {} && git fetch'.format(source))
+        sudo('cd {} && git fetch'.format(source))
     else:
-        run('git clone {} --branch {} --single-branch {}'.format(REPO_URL, REPO_BRANCH, source))
+        sudo('git clone {} --branch {} --single-branch {}'.format(REPO_URL, REPO_BRANCH, source))
     # CHECK LOCAL COMMIT
     # current_commit = local('git log -n 1 --format=%H', capture=True)
     # HARD RESET SERVER CODE
@@ -84,61 +84,65 @@ def _update_settings(source):
     settings_path = '{}/{}/settings.py'.format(source, env.proj)
 
     # TURN OFF DEBUG - NOT UNTIL MEDIA SERVER READY
-    # sed(settings_path, "DEBUG = True", "DEBUG = False")
+    # sed(settings_path, "DEBUG = True", "DEBUG = False", use_sudo=True)
 
     # CHANGE ALLOWED HOSTS
     sed(settings_path,
         'ALLOWED_HOSTS =.+$',
-        'ALLOWED_HOSTS = ["%s"]' % (env.host)
+        'ALLOWED_HOSTS = ["%s"]' % (env.host),
+        use_sudo=True
     )
 
     # CHANGE STATIC_ROOT / MEDIA_ROOT PATHS
 
-    run(r"sed -i.bak -r -e 's/STATIC_ROOT =.*$/STATIC_ROOT = os.path.join(BASE_DIR, '\''..\/static'\'')/g' {}".format(settings_path))
-    append(settings_path, "MEDIA_URL = '/media/'")
-    append(settings_path, "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')")
+    run(r"sudo sed -i.bak -r -e 's/STATIC_ROOT =.*$/STATIC_ROOT = os.path.join(BASE_DIR, '\''..\/static'\'')/g' {}".format(settings_path))
+    append(settings_path, "MEDIA_URL = '/media/'", use_sudo=True)
+    append(settings_path, "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')", use_sudo=True)
 
     # ADD MOD_WSGI APP
     sed(settings_path,
         'INSTALLED_APPS = \[',
-        'INSTALLED_APPS = \["mod_wsgi.server",')
+        'INSTALLED_APPS = \["mod_wsgi.server",',
+        use_sudo=True)
 
     # CHANGE DATABASES
-    run(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''root'\'', '\''PASSWORD'\'': '\''raspberry'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},\}/g' /home/pi/python/website/kusel/sedtest.txt" % (env.proj, MYSQL_HOST))
+    sudo(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''root'\'', '\''PASSWORD'\'': '\''raspberry'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},/g' %s" % (env.proj, MYSQL_HOST, settings_path))
 
     # GENERATE A NEW KEY (keep key constant after initial deploy)
     secret_key_file = '{}/{}/secret_key.py'.format(source, env.proj)
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
-        append(secret_key_file, "SECRET_KEY = '{}'".format(key))
-    append(settings_path, 'from .secret_key import SECRET_KEY')
+        append(secret_key_file, "SECRET_KEY = '{}'".format(key), use_sudo=True)
+    append(settings_path, 'from .secret_key import SECRET_KEY', use_sudo=True)
 
 @roles('webserver')
 def _update_virtualenv(source):
-    env.venv_dir = env.deploy_dir + env.venv
+    env.venv_dir = '{}/{}'.format(env.deploy_dir, env.venv)
     if not exists(env.venv_dir + '/bin/pip'):
-        run('pip install virtualenv')
-        run('virtualenv -p {} {}'.format(PYTHON, env.venv_dir))
-    run('{}/bin/pip install -r {}/requirements.txt'.format(env.venv_dir, source))
+        sudo('pip install -U pip')
+        sudo('pip install virtualenv')
+        sudo('virtualenv -p {} {}'.format(PYTHON, env.venv_dir))
+    sudo('{}/bin/pip install -r {}/requirements.txt'.format(env.venv_dir, source))
 
 @roles('dbserver')
 def _config_mysql():
     # BIND ADDRESS TO WEBSERVER
 
     # UPDATE PACKAGES, INSTALL MYSQL
-    sudo('apt-get update && sudo apt-get upgrade')
+    sudo('apt-get -y update && sudo apt-get -y upgrade')
     sudo('apt-get install -y mysql-server && apt-get install -y mysql-client')
 
     # BUILD DATABASE, CHANGE PERMISSIONS
-    run('echo "CREATE DATABASE {}_db;" | mysql --user=root --password=raspberry'.format(env.proj))
-    run("""echo "GRANT ALL ON {}_db.* TO root@{} IDENTIFIED BY 'raspberry';" | mysql --user=root --password=raspberry""".format(env.proj, APACHE_HOST))
+    sudo('echo "CREATE DATABASE {}_db;" | mysql --user=root --password=raspberry'.format(env.proj))
+    sudo("""echo "GRANT ALL ON {}_db.* TO root@{} IDENTIFIED BY 'raspberry';" | mysql --user=root --password=raspberry""".format(env.proj, APACHE_HOST))
 
     # CHANGE BIND-ADDRESS
     mysql_conf_path = '/etc/mysql/my.cnf'
     sed(mysql_conf_path, 
         'bind-address.*$',
-        'bind-address = {}'.format(APACHE_HOST),)
+        'bind-address = {}'.format(APACHE_HOST),
+        use_sudo=True)
 
     # RESTART MYSQL
     sudo('service mysql restart')
@@ -149,7 +153,7 @@ def _config_apache():
     sudo('apt-get -y update')
     sudo('apt-get -y install python3-pip')
     sudo('apt-get -y install apache2')
-    sudo('apt-get -y install libapache2-mod-wsgi')
+    sudo('apt-get -y install libapache2-mod-wsgi-py3')
     sudo('apache2ctl restart')
 
     # ENABLE MOD_WSGI
@@ -166,14 +170,14 @@ def _config_apache():
         'SERVERNAME': env.proj,
         'SERVERALIAS': env.host_string,
         'SERVERROOT': env.deploy_dir,
-        'VIRTUALENV': '{}\/{}'.format(env.deploy_dir, env.venv),
+        'VIRTUALENV': '{}/{}'.format(env.deploy_dir, env.venv),
         'PYTHON': PYTHON,
         'STATICROOT': env.deploy_dir,
         'MEDIAROOT': env.deploy_dir,
     }
 
     for s in APACHE_DICT:
-        sed(apache_config_path, s, APACHE_DICT[s])
+        sed(apache_config_path, s, APACHE_DICT[s], use_sudo=True)
 
 @roles('webserver')
 def _run_server(source):
@@ -183,8 +187,8 @@ def _run_server(source):
 #@roles('webserver')
 def _update_database(source):
     with virtualenv(source):
-        run('python3 manage.py makemigrations --noinput' % (source_folder,))
-        run('python3 manage.py migrate --noinput' % (source_folder,))
+        run('python3 manage.py makemigrations --noinput')
+        run('python3 manage.py migrate --noinput')
 
 def deploy():
     with virtualenv():

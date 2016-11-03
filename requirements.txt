@@ -2,6 +2,9 @@ crypto==1.4.1
 Django==1.10.2
 ecdsa==0.13
 Fabric3==1.12.post1
+mod-wsgi==4.5.7
+mod-wsgi-httpd==2.4.23.1
+mysqlclient==1.3.9
 Naked==0.1.31
 paramiko==1.17.2
 pycrypto==2.6.1
@@ -9,3 +12,4 @@ PyYAML==3.12
 requests==2.11.1
 shellescape==3.4.1
 six==1.10.0
+
