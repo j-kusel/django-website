@@ -11,6 +11,8 @@ REPO_URL = 'https://github.com/ultraturtle0/website.git'
 REPO_BRANCH = 'deployment'
 
 PYTHON = 'python3.4'
+VIRTUALENV = 'virtualenv'
+LOCALVENV = 'site'
 
 APACHE_HOST = '192.168.1.151' # make these dicts with users/env variable psswrds
 MYSQL_HOST = '192.168.1.151'
@@ -31,7 +33,7 @@ projname = re.findall('\/([a-zA-Z]*|\d*)/?$', pathname)[0]
 
 env.directory = pathname
 env.proj = projname
-env.venv = 'virtualenv'
+env.venv = VIRTUALENV
 env.deploy_dir = '/srv/www/{}'.format(env.proj)
 env.apache_dir = '/etc/apache2'
 
@@ -59,7 +61,9 @@ def migrate():
     _config_mysql()
     _config_apache()
     _update_database(env.source_folder)
-    _migrate_static(env.source_folder)
+
+    local_manage = path.dirname(path.realpath(__file__))
+    _migrate_static(local_manage)
     #_run_server(source_folder)
 
 @roles('webserver')
@@ -199,9 +203,9 @@ def _migrate_static(source):
 
     # COLLECTSTATIC AND SYNC MEDIA
     static_new = env.deploy_dir + '/../static/'
-    static = path.join(path.dirname(path.realpath(__file__)), 'static/')
+    static = path.join(source, 'static/')
     with lcd(source):
-        with prefix('. ../virtualenv/bin/activate'):
+        with prefix('. ../{}/bin/activate'.format(LOCALVENV)):
             local('python3 manage.py collectstatic')
             project.rsync_project(remote_dir=static_new, local_dir=static)
 
