@@ -207,8 +207,9 @@ def _migrate_static(source):
     # COLLECTSTATIC AND SYNC MEDIA
     # static_new = env.deploy_dir + '/../static/'
     # static = path.join(source, 'static/')
-    sudo('{}/bin/python3 manage.py collectstatic'.format(env.venv_dir))
-        # project.rsync_project(remote_dir=static_new, local_dir=static)
+    with cd(source):
+        sudo('{}/bin/python3 manage.py collectstatic --noinput'.format(env.venv_dir))
+    # project.rsync_project(remote_dir=static_new, local_dir=static)
 
 #def sedtest():
     #sed('/home/pi/python/website/kusel/sedtest.txt',
