@@ -18,6 +18,8 @@ APACHE_HOST = '192.168.1.151' # make these dicts with users/env variable psswrds
 MYSQL_HOST = '192.168.1.151'
 MEDIA_HOST = '192.168.1.151'
 
+APACHE_LOGLEVEL = 'warn'
+
 ADMIN_INFO = {
     'email': 'jordankusel@my.unt.edu',
 }
@@ -53,7 +55,7 @@ def virtualenv(source):
             yield
 
 def migrate():
-    _create_directory_structure_if_necessary(env.deploy_dir)
+    _create_directory_structure_if_necessary()
     env.source_folder = env.deploy_dir + '/source'
     _pull_source(env.source_folder)
     _update_settings(env.source_folder)
@@ -67,10 +69,10 @@ def migrate():
     #_run_server(source_folder)
 
 @roles('webserver')
-def _create_directory_structure_if_necessary(deploy_dir):
-    sudo('mkdir -p {}'.format(deploy_dir))
+def _create_directory_structure_if_necessary():
+    sudo('mkdir -p {}'.format(env.deploy_dir))
     for subfolder in ('static', 'media', env.venv, 'source'):
-        sudo('mkdir -p {}/{}'.format(deploy_dir, subfolder))
+        sudo('mkdir -p {}/{}'.format(env.deploy_dir, subfolder))
 
 @roles('webserver')
 def _pull_source(source):
@@ -87,8 +89,8 @@ def _pull_source(source):
 def _update_settings(source):
     settings_path = '{}/{}/settings.py'.format(source, env.proj)
 
-    # TURN OFF DEBUG - NOT UNTIL MEDIA SERVER READY
-    # sed(settings_path, "DEBUG = True", "DEBUG = False", use_sudo=True)
+    # TURN OFF DEBUG MODE
+    sed(settings_path, "DEBUG.*$", "DEBUG = False", use_sudo=True)
 
     # CHANGE ALLOWED HOSTS
     sed(settings_path,
@@ -101,6 +103,9 @@ def _update_settings(source):
     run(r"sudo sed -i.bak -r -e 's/STATIC_ROOT =.*$/STATIC_ROOT = os.path.join(BASE_DIR, '\''..\/static'\'')/g' {}".format(settings_path))
     append(settings_path, "MEDIA_URL = '/media/'", use_sudo=True)
     append(settings_path, "MEDIA_ROOT = os.path.join(BASE_DIR, '../media')", use_sudo=True)
+
+    # INSTALL mod_wsgi.server
+    run(r"sudo sed -i.bak -r -e 's/INSTALLED_APPS.*$/INSTALLED_APPS = ['\''mod_wsgi.server'\'',/g' {}".format(settings_path))
 
     # CHANGE DATABASES
     sudo(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''root'\'', '\''PASSWORD'\'': '\''raspberry'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},/g' %s" % (env.proj, MYSQL_HOST, settings_path))
@@ -154,7 +159,6 @@ def _config_apache():
     sudo('apt-get -y install python3-pip')
     sudo('apt-get -y install apache2')
     sudo('apt-get -y install libapache2-mod-wsgi-py3')
-    sudo('apache2ctl restart')
 
     # ENABLE MOD_WSGI
     sudo('a2enmod wsgi')
@@ -174,17 +178,20 @@ def _config_apache():
         'PYTHON': PYTHON,
         'STATICROOT': env.deploy_dir,
         'MEDIAROOT': env.deploy_dir,
+        'LOGLEVEL': APACHE_LOGLEVEL,
     }
 
     for s in APACHE_DICT:
         sed(apache_config_path, s, APACHE_DICT[s], use_sudo=True)
 
-@roles('webserver')
-def _run_server(source):
-    with virtualenv(source):
-        run('python3 manage.py runserver 0:8000')
+    # ENABLE SITE
+    sudo('a2ensite {}'.format(env.proj))
 
-#@roles('webserver')
+    # CHANGE OWNERSHIP TO APACHE
+    sudo('chown -R www-data:www-data {}'.format(env.deploy_dir))
+    sudo('apache2ctl restart')
+
+@roles('webserver')
 def _update_database(source):
     with virtualenv(source):
         run('python3 manage.py makemigrations --noinput')
@@ -210,8 +217,3 @@ def _migrate_static(source):
     with cd(source):
         sudo('{}/bin/python3 manage.py collectstatic --noinput'.format(env.venv_dir))
     # project.rsync_project(remote_dir=static_new, local_dir=static)
-
-#def sedtest():
-    #sed('/home/pi/python/website/kusel/sedtest.txt',
-    #run(r"sed -i.bak -r -e 's/STATIC_ROOT =.*$/STATIC_ROOT = os.path.join(BASE_DIR, '\''..\/static'\'')/g' {}".format(settings_path))
-    #pass
