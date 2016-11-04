@@ -14,6 +14,7 @@
       <div class='mainbox'>
         {% for proj in projs %}
           <h2>{{ proj.title }}</h2>
+          <h3>{{ proj.description }}</h3>
           <p><a href='{{ proj.score.url }}'>score</a></p>
         {% endfor %}
       </div>

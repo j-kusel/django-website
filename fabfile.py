@@ -68,6 +68,17 @@ def migrate():
     _migrate_static(env.source_folder)
     #_run_server(source_folder)
 
+def update():
+    env.source_folder = env.deploy_dir + '/source'
+    _fetch_git(env.source_folder)
+    _update_database(env.source_folder)
+    _migrate_static(env.source_folder)
+
+@roles('webserver')
+def _fetch_git(source):
+    if exists(source + '/.git'):
+        sudo('cd {} && git fetch'.format(source))
+
 @roles('webserver')
 def _create_directory_structure_if_necessary():
     sudo('mkdir -p {}'.format(env.deploy_dir))
@@ -76,10 +87,8 @@ def _create_directory_structure_if_necessary():
 
 @roles('webserver')
 def _pull_source(source):
-    if exists(source + '/.git'):
-        sudo('cd {} && git fetch'.format(source))
-    else:
-        sudo('git clone {} --branch {} --single-branch {}'.format(REPO_URL, REPO_BRANCH, source))
+    sudo('git clone {} --branch {} --single-branch {}'.format(REPO_URL, REPO_BRANCH, source))
+
     # CHECK LOCAL COMMIT
     # current_commit = local('git log -n 1 --format=%H', capture=True)
     # HARD RESET SERVER CODE
