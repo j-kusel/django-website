@@ -37,6 +37,7 @@ env.directory = pathname
 env.proj = projname
 env.venv = VIRTUALENV
 env.deploy_dir = '/srv/www/{}'.format(env.proj)
+env.venv_dir = '{}/{}'.format(env.deploy_dir, env.venv)
 env.apache_dir = '/etc/apache2'
 
 env.colorize_errors = True
@@ -129,7 +130,6 @@ def _update_settings(source):
 
 @roles('webserver')
 def _update_virtualenv(source):
-    env.venv_dir = '{}/{}'.format(env.deploy_dir, env.venv)
     if not exists(env.venv_dir + '/bin/pip'):
         sudo('pip install -U pip')
         sudo('pip install virtualenv')
