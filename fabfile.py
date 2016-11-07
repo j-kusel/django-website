@@ -98,6 +98,7 @@ def _pull_source(source):
 @roles('webserver')
 def _update_settings(source):
     settings_path = '{}/{}/settings.py'.format(source, env.proj)
+    sudo('mv {}/{}/settings_deploy.py {}'.format(source, env.proj, settings_path))
 
     # TURN OFF DEBUG MODE
     sed(settings_path, "DEBUG.*$", "DEBUG = False", use_sudo=True)
