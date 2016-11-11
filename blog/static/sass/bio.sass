@@ -9,11 +9,21 @@ $spad: 30px
 
 =bfog($opac)
   border-color: rgba(19,17,21,$opac)
+
 =tfog($opac, $hov)
   color: rgba(87,83,88,$opac)
   +transition(color .3s ease)
   &:hover
     color: rgba(19,17,21,$hov)
+
+=wfog($hov, $opac)
+  color: rgba(255,255,255,$opac)
+  +transition(opacity .3s ease)
+  &:hover
+    opacity: $hov
+
+=unlink
+  text-decoration: none
 
 @font-face
   font-family: 'Lato'
@@ -44,11 +54,17 @@ $spad: 30px
       border-top: $bline
       +bfog(.5)
       h3
-        padding-right: $spad
-        text-align: right
-        font-family: 'Lato'
-        font-weight: 100
-  
+        a
+          position: relative
+          float: right
+          +unlink
+          +wfog(.8, .9)
+          padding-left: $spad
+          padding-right: 15%
+          text-align: right
+          font-family: 'Lato'
+          font-weight: 100  
+
   .mainbox
     position: absolute
     padding-left: $spad
@@ -58,5 +74,5 @@ $spad: 30px
     z-index: 5
     width: 30%
     height: 47%
-    overflow: scroll
+    overflow: auto
     background-color: rgba(185,183,185,.2)

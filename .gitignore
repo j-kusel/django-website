@@ -6,3 +6,4 @@ kusel_db
 *.txt
 static/
 media/
+__pycache__

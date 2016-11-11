@@ -19,11 +19,11 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from kusel import views
-from projects import views as pv
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home_page, name='home'),
     url(r'^bio/', views.bio_page, name='bio'),
-    url(r'^sound/', include('projects.urls')),
+    url(r'^sound/', include('projects.sound_urls')),
+    url(r'^code/', include('projects.code_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

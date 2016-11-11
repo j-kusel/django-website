@@ -3,11 +3,12 @@ from .models import Project, Type
 
 # Create your views here.
 
-def proj_page(request, type=''):
+def proj_page(request, type='', cat=''):
     category = Type.objects.filter(title=type)
+    types = Type.objects.filter(category=cat)
     if category:
         projs = Project.objects.filter(category=Type.objects.get(title=type))
-        types = Type.objects.all()
-        return render(request, 'projects/{}.html'.format(type), {'projs': projs, 'types': types})
+        return render(request, 'projects/portfolio.html', {'projs': projs, 'types': types, 'cat': cat})
     else:
-        return render(request, 'projects/sound.html', {'projs': []})
+        return render(request, 'projects/portfolio.html', {'projs': [], 'types': types, 'cat': cat})
+
