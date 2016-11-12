@@ -1,9 +1,9 @@
 *.pyc
+*.map
 *.swp
 db.sqlite3
 secret_key.py
 kusel_db
 *.txt
-static/
-media/
 __pycache__
+sqlpass.py

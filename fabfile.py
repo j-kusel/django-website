@@ -5,6 +5,7 @@ from fabric.contrib.files import append, exists, sed
 from fabric.decorators import roles
 from contextlib import contextmanager as _contextmanager
 from os import path
+from sqlpass import MYSQLPASS
 import re, random
 
 REPO_URL = 'https://github.com/ultraturtle0/website.git'
@@ -14,13 +15,14 @@ PYTHON = 'python3.4'
 VIRTUALENV = 'virtualenv'
 LOCALVENV = 'site'
 
-APACHE_HOST = '192.168.1.151' # make these dicts with users/env variable psswrds
-MYSQL_HOST = '192.168.1.151'
-MEDIA_HOST = '192.168.1.151'
+APACHE_HOST = '138.197.20.29' # make these dicts with users/env variable psswrds
+MYSQL_HOST = '138.197.20.29'
+MEDIA_HOST = '138.197.20.29'
 
 APACHE_LOGLEVEL = 'warn'
 
 ADMIN_INFO = {
+    'name': 'Jordan Kusel',
     'email': 'jordankusel@my.unt.edu',
 }
 
@@ -29,6 +31,8 @@ env.roledefs.update({
     'dbserver': [MYSQL_HOST,],
     'mediaserver': [MEDIA_HOST,],
 })
+
+env.user = 'jordankusel'
 
 pathname = path.dirname(path.realpath(__file__))
 projname = re.findall('\/([a-zA-Z]*|\d*)/?$', pathname)[0]
@@ -57,12 +61,14 @@ def virtualenv(source):
 
 def migrate():
     _create_directory_structure_if_necessary()
+    _config_packages()
+    _install_git()
     env.source_folder = env.deploy_dir + '/source'
     _pull_source(env.source_folder)
     _update_settings(env.source_folder)
-    _update_virtualenv(env.source_folder)
     _config_mysql()
     _config_apache()
+    _update_virtualenv(env.source_folder)
     _update_database(env.source_folder)
 
     local_manage = path.dirname(path.realpath(__file__))
@@ -85,6 +91,10 @@ def _create_directory_structure_if_necessary():
     sudo('mkdir -p {}'.format(env.deploy_dir))
     for subfolder in ('static', 'media', env.venv, 'source'):
         sudo('mkdir -p {}/{}'.format(env.deploy_dir, subfolder))
+
+@roles('webserver')
+def _install_git():
+    sudo('apt-get -y install git-core && git config --global user.name "{}" && git config --global user.email {}'.format(ADMIN_INFO['name'], ADMIN_INFO['email']))
 
 @roles('webserver')
 def _pull_source(source):
@@ -119,7 +129,8 @@ def _update_settings(source):
     run(r"sudo sed -i.bak -r -e 's/INSTALLED_APPS.*$/INSTALLED_APPS = ['\''mod_wsgi.server'\'',/g' {}".format(settings_path))
 
     # CHANGE DATABASES
-    sudo(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''root'\'', '\''PASSWORD'\'': '\''raspberry'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},/g' %s" % (env.proj, MYSQL_HOST, settings_path))
+    sql_server = 'localhost' if APACHE_HOST == MYSQL_HOST else MYSQL_HOST
+    sudo(r"sed -i.bak -r -e 's/DATABASES = \{/DATABASES = \{'\''default'\'': \{'\''ENGINE'\'': '\''django.db.backends.mysql'\'', '\''NAME'\'': '\''%s_db'\'', '\''USER'\'': '\''%s'\'', '\''PASSWORD'\'': '\''%s'\'', '\''HOST'\'': '\''%s'\'', '\''PORT'\'':'\'''\'',\},/g' %s" % (env.proj, env.user, MYSQLPASS, sql_server, settings_path))
 
     # GENERATE A NEW KEY (keep key constant after initial deploy)
     secret_key_file = '{}/{}/secret_key.py'.format(source, env.proj)
@@ -129,11 +140,15 @@ def _update_settings(source):
         append(secret_key_file, "SECRET_KEY = '{}'".format(key), use_sudo=True)
     append(settings_path, 'from .secret_key import SECRET_KEY', use_sudo=True)
 
+
+
+
 @roles('webserver')
 def _update_virtualenv(source):
     if not exists(env.venv_dir + '/bin/pip'):
-        sudo('pip install -U pip')
-        sudo('pip install virtualenv')
+        sudo('apt-get -y install python3-pip')
+        sudo('pip3 install -U pip')
+        sudo('pip3 install virtualenv')
         sudo('virtualenv -p {} {}'.format(PYTHON, env.venv_dir))
     # CHANGE VIRTUALENV OWNERSHIP
     sudo('chown -R {0}:{0} {1}/'.format(env.user, env.venv_dir))
@@ -142,15 +157,14 @@ def _update_virtualenv(source):
 
 @roles('dbserver')
 def _config_mysql():
-    # BIND ADDRESS TO WEBSERVER
-
-    # UPDATE PACKAGES, INSTALL MYSQL
-    sudo('apt-get -y update && sudo apt-get -y upgrade')
-    sudo('apt-get install -y mysql-server && apt-get install -y mysql-client')
 
     # BUILD DATABASE, CHANGE PERMISSIONS
-    sudo('echo "CREATE DATABASE {}_db;" | mysql --user=root --password=raspberry'.format(env.proj))
-    sudo("""echo "GRANT ALL ON {}_db.* TO root@{} IDENTIFIED BY 'raspberry';" | mysql --user=root --password=raspberry""".format(env.proj, APACHE_HOST))
+    sudo('echo "CREATE DATABASE {}_db;" | mysql --user=root'.format(env.proj))
+    sudo("""echo "CREATE USER {0}@{1} IDENTIFIED BY '{2}';" | mysql --user=root""".format(env.user, MYSQL_HOST, MYSQLPASS))
+    sudo("""echo "CREATE USER {0} IDENTIFIED BY '{2}';" | mysql --user=root""".format(env.user, MYSQL_HOST, MYSQLPASS))
+    sudo("""echo "GRANT ALL ON {0}_db.* TO {1}@{2} IDENTIFIED BY '{3}';" | mysql --user=root""".format(env.proj, env.user, MYSQL_HOST, MYSQLPASS))
+    sudo("""echo "GRANT ALL ON {0}_db.* TO {1}@localhost IDENTIFIED BY '{2}';" | mysql --user=root""".format(env.proj, env.user, MYSQLPASS))
+    sudo("""echo "FLUSH PRIVILEGES;" | mysql --user=root""")
 
     # CHANGE BIND-ADDRESS
     mysql_conf_path = '/etc/mysql/my.cnf'
@@ -163,11 +177,13 @@ def _config_mysql():
     sudo('service mysql restart')
 
 @roles('webserver')
-def _config_apache():
-    # INSTALL APACHE PACKAGES
+def _config_packages():
+    # INSTALL PACKAGES
     sudo('apt-get -y update')
     sudo('apt-get -y install python3-pip')
+    sudo('apt-get install -y mysql-server && apt-get install -y mysql-client && apt-get -y install libmysqlclient-dev')
     sudo('apt-get -y install apache2')
+    sudo('apt-get -y install apache2-dev')
     sudo('apt-get -y install libapache2-mod-wsgi-py3')
 
     # ENABLE MOD_WSGI
@@ -175,6 +191,7 @@ def _config_apache():
 
     #sudo("echo '<Directory {}/source>\n\t<Files wsgi.py>\n\tRequire all granted\n\t</Directory>' >> {}/apache2.conf".format(env.deploy_dir, env.apache_dir))
 
+def _config_apache():
     # MOVE / EDIT CONFIG TEMPLATE FILE (apache.conf)
     apache_config_path = '{}/sites-available/{}.conf'.format(env.apache_dir, env.proj)
     sudo('mv {}/source/apache.conf {}'.format(env.deploy_dir, apache_config_path))
