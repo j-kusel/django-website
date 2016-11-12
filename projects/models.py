@@ -19,6 +19,7 @@ class Project(models.Model):
     linktype = models.CharField(default='score', max_length=20, blank=True, null=True)
 
     category = models.ForeignKey('Type', on_delete=models.CASCADE)
+    year = models.SmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return '{} ({})'.format(self.title, self.category)

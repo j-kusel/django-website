@@ -7,3 +7,5 @@ kusel_db
 *.txt
 __pycache__
 sqlpass.py
+fabfile.py
+fabsec.py

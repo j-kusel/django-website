@@ -75,19 +75,30 @@
       height: 83%;
       padding-left: 30px;
       padding-right: 30px;
+      padding-top: 30px;
       overflow: auto;
       background-color: rgba(185, 183, 185, 0.2); }
       .page .col2 .mainbox h2 {
         font-family: "Lato";
         font-weight: 300;
         font-weight: 400;
-        margin-bottom: 1%; }
+        margin-bottom: 1%;
+        display: inline; }
       .page .col2 .mainbox h3 {
         font-family: "Lato";
         font-weight: 200;
         font-size: 1em;
         margin-top: 1%;
         margin-bottom: 1%; }
+      .page .col2 .mainbox h4 {
+        font-family: "Lato";
+        font-weight: 200;
+        font-size: 1em;
+        opacity: 0.2;
+        margin-top: 1%;
+        margin-bottom: 1%;
+        padding-left: 2%;
+        display: inline; }
       .page .col2 .mainbox ul {
         padding-left: 0;
         margin-top: 3%; }

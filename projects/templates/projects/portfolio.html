@@ -23,6 +23,9 @@
         <div class='mainbox'>
           {% for proj in projs %}
             <h2>{{ proj.title }}</h2>
+            {% if proj.year %}
+              <h4>{{ proj.year }}</h4>
+            {% endif %}
             <h3>{{ proj.description }}</h3>
             <ul>
               {% if proj.extlink %}
