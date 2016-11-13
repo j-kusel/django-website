@@ -12,7 +12,7 @@ $spad: 30px
 
 =tfog($opac, $hov)
   color: rgba(87,83,88,$opac)
-  +transition(color .3s ease)
+  +transition(color .5s ease)
   &:hover
     color: rgba(19,17,21,$hov)
 
@@ -69,10 +69,17 @@ $spad: 30px
     position: absolute
     padding-left: $spad
     padding-right: $spad
+    padding-top: 20px
     top: 15%
     left: 33.5%
     z-index: 5
     width: 30%
-    height: 47%
+    height: 45%
     overflow: auto
     background-color: rgba(185,183,185,.2)
+    p
+      font-family: 'Lato'
+      font-weight: 200
+      a
+        +unlink
+        +tfog(.6, 1)
