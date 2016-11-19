@@ -22,9 +22,29 @@ $spad: 30px
     color: rgba(19,17,21,$hov)  
 
 @font-face
-  font-family: 'Lato'
+  font-family: 'Lato-Hairline'
   src: url('../fonts/Lato-Hairline.ttf')
-  src: local('../fonts/Lato-Hairline.ttf')
+
+@font-face
+  font-family: 'Lato-Thin'
+  src: url('../fonts/Lato-Thin.ttf')
+
+@font-face
+  font-family: 'Lato-Thin-Italic'
+  src: url('../fonts/Lato-ThinItalic.ttf')
+
+@font-face
+  font-family: 'Lato-Hairline-Italic'
+  src: url('../fonts/Lato-HairlineItalic.ttf')
+
+@font-face
+  font-family: 'Lato-Light'
+  src: url('../fonts/Lato-Light.ttf')
+
+@font-face
+  font-family: 'Lato-Light-Italic'
+  src: url('../fonts/Lato-LightItalic.ttf')
+
 
 =unlink
   text-decoration: none
@@ -45,8 +65,8 @@ $spad: 30px
   h1
     color: rgba(19, 17, 21, .8)
     font-size: 3em
-    font-family: 'Lato'
-    font-weight: 200
+    font-family: 'Lato-Light'
+    font-weight: normal
     text-align: right
     padding-right: $spad
     padding-top: 26%
@@ -70,8 +90,8 @@ $spad: 30px
       padding: 1em 5em 1em $spad
       margin: 0
       +bfog(.4)
-      font-family: 'Lato'
-      font-weight: 100
+      font-family: 'Lato-Thin'
+      font-weight: normal
       &:nth-child(2n)
         border-top: $bline 
         border-bottom: $bline
