@@ -11,3 +11,4 @@ fabfile.py
 fabsec.py
 linfile.py
 passwords.py
+.sass-cache/*

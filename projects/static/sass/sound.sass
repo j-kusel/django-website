@@ -36,9 +36,16 @@ $spad: 30px
   text-decoration: none
 
 @font-face
-  font-family: 'Lato'
+  font-family: 'Lato-Hairline'
   src: url('../fonts/Lato-Hairline.ttf')
-  src: local('../fonts/Lato-Hairline.ttf')
+
+@font-face
+  font-family: 'Lato-Thin'
+  src: url('../fonts/Lato-Thin.ttf')
+
+@font-face
+  font-family: 'Lato-Light'
+  src: url('../fonts/Lato-Light.ttf')
 
 .page
   background-image: url('https://scproxy-prod.adobecc.com/api?X-Location=https%3A%2F%2Fcc-us1-prod.adobesc.com%2Fapi%2Fv1%2Fassets%2F7f6e1280-4ef4-4797-8296-454af9ff535a%2Frenditions%2Fjpg%2F1200?&link=2e4c8927-34fb-4d7f-7559-398721d9a079') 
@@ -72,8 +79,8 @@ $spad: 30px
           padding-left: $spad
           padding-right: 15%
           text-align: right
-          font-family: 'Lato'
-          font-weight: 100
+          font-family: 'Lato-Thin'
+          font-weight: normal
 
 
 
@@ -99,8 +106,8 @@ $spad: 30px
         text-align: center
         +unlink
         +tfog(.6, 1)
-        font-family: 'Lato'
-        font-weight: 100
+        font-family: 'Lato-Thin'
+        font-weight: normal
 
     .mainbox
       position: relative
@@ -112,22 +119,21 @@ $spad: 30px
       overflow: auto
       background-color: rgba(185,183,185,.2)
       h2
-        font-family: 'Lato'
-        font-weight: 300
-        font-weight: 400
+        font-family: 'Lato-Light'
+        font-weight: normal
         margin-bottom: 1%
         display: inline
 
       h3
-        font-family: 'Lato'
-        font-weight: 200
+        font-family: 'Lato-Hairline'
+        font-weight: normal
         font-size: 1em
         margin-top: 1%
         margin-bottom: 1%
 
       h4
-        font-family: 'Lato'
-        font-weight: 200
+        font-family: 'Lato-Thin'
+        font-weight: normal
         font-size: 1em
         opacity: .2
         margin-top: 1%
@@ -144,7 +150,7 @@ $spad: 30px
       a
         +unlink
         +tfog(.4, .9)
-        font-family: 'Lato'
-        font-weight: 200
+        font-family: 'Lato-Thin'
+        font-weight: normal
         font-size: .75em
 
