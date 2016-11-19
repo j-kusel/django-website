@@ -9,3 +9,5 @@ __pycache__
 sqlpass.py
 fabfile.py
 fabsec.py
+linfile.py
+passwords.py
