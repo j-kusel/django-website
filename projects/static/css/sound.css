@@ -85,12 +85,12 @@
       background-color: rgba(185, 183, 185, 0.2); }
       .page .col2 .mainbox h2 {
         font-family: "Lato-Light";
-        font-weight: 200;
+        font-weight: 600;
         margin-bottom: 1%;
         display: inline; }
       .page .col2 .mainbox h3 {
-        font-family: "Lato-Hairline";
-        font-weight: normal;
+        font-family: "Lato-Thin";
+        font-weight: 100;
         font-size: 1em;
         margin-top: 1%;
         margin-bottom: 1%; }

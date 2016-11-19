@@ -58,16 +58,20 @@
     overflow: auto;
     background-color: rgba(185, 183, 185, 0.2); }
     .page .mainbox p {
-      font-family: "Lato-Thin";
-      font-weight: 200; }
+      font-family: "Lato-Light"; }
       .page .mainbox p a {
         text-decoration: none;
         color: rgba(87, 83, 88, 0.6);
         -moz-transition: color 0.5s ease;
         -o-transition: color 0.5s ease;
         -webkit-transition: color 0.5s ease;
-        transition: color 0.5s ease; }
+        transition: color 0.5s ease;
+        font-family: "Lato-Light";
+        font-weight: 600; }
         .page .mainbox p a:hover {
           color: #131115; }
+      .page .mainbox p span {
+        font-family: "Lato-Light";
+        font-weight: 600; }
 
 /*# sourceMappingURL=bio.css.map */
