@@ -85,7 +85,7 @@
       background-color: rgba(185, 183, 185, 0.2); }
       .page .col2 .mainbox h2 {
         font-family: "Lato-Light";
-        font-weight: normal;
+        font-weight: 200;
         margin-bottom: 1%;
         display: inline; }
       .page .col2 .mainbox h3 {
@@ -96,7 +96,7 @@
         margin-bottom: 1%; }
       .page .col2 .mainbox h4 {
         font-family: "Lato-Thin";
-        font-weight: normal;
+        font-weight: 100;
         font-size: 1em;
         opacity: 0.2;
         margin-top: 1%;
