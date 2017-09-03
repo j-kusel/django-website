@@ -1,10 +1,25 @@
 $bline: 1px solid black
 $spad: 30px
 
+=transition($args...)
+  -moz-transition: $args
+  -o-transition: $args
+  -webkit-transition: $args
+  transition: $args
 
+=transition-property($property...)
+  -moz-transition-property: $property
+  -o-transition-property: $property
+  -webkit-transition-property: $property
+  transition-property: $property
 
 =bfog($opac)
   border-color: rgba(19,17,21,$opac)
+=tfog($opac, $hov)
+  color: rgba(87,83,88,$opac)
+  +transition(color .5s ease)
+  &:hover
+    color: rgba(19,17,21,$hov)  
 
 @font-face
   font-family: 'Lato-Hairline'
@@ -35,9 +50,7 @@ $spad: 30px
   margin: 0px
  
   h1
-    position: relative
-    color: rgb(19, 17, 21)
-    opacity: 0
+    color: rgba(19, 17, 21, .8)
     font-size: 3em
     font-family: 'Lato-Light'
     font-weight: normal
@@ -69,11 +82,9 @@ $spad: 30px
       &:nth-child(2n)
         border-top: $bline 
         border-bottom: $bline
-        +bfog(0.4)
+        +bfog(.4)
  
     a
-      position: relative
       +unlink
-      color: #131115
-      opacity: 0.0
+      +tfog(.5, 1)
 
