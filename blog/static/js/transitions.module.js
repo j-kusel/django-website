@@ -7,15 +7,16 @@ var transitions = (function () {
     };
 
     transitions.textFocusOff = function () {
-        $(this).animate({opacity: 0.6}, 'fast');
+        var $self = $(this);
+        $self.animate({opacity: $self.attr('opacity')}, 'fast');
     };
 
     transitions.textSlide = function(index) {
-        var self = this;
+        var $self = $(this);
         setTimeout(function () {
-            $(self)
+            $self
                 .css({opacity: 0.0, left: '50'})
-                .animate({opacity: 0.6, left: '0'},
+                .animate({opacity: $self.attr('opacity'), left: '0'},
                     'slow',
                     'swing');
         }, index * 100);

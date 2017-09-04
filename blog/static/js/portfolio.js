@@ -1,5 +1,7 @@
 $(document).ready(function () {
     $('a').each(function (index) {
-        $(this).hover(transitions.textFocusOn, transitions.textFocusOff);
+        $(this)
+            .attr('opacity', 0.7)
+            .hover(transitions.textFocusOn, transitions.textFocusOff);
     });
 });

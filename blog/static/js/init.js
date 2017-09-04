@@ -1,12 +1,12 @@
-console.log(window.transitions !== false);
-
 $(document).ready(function () {
     init();
 });
 
 var init = function() { 
     $('a').each(function (index) { 
-        $(this).hover(transitions.textFocusOn, transitions.textFocusOff); 
+        $(this)
+            .attr('opacity', 0.6)
+            .hover(transitions.textFocusOn, transitions.textFocusOff); 
     }); 
  
     $('h1') 
