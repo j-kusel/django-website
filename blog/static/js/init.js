@@ -3,21 +3,27 @@ $(document).ready(function () {
 });
 
 var init = function() { 
-    $('a').each(function (index) { 
+    $('h3').each(function (index) { 
         $(this)
             .attr('opacity', 0.6)
-            .hover(transitions.textFocusOn, transitions.textFocusOff); 
-    }); 
+            .attr('child', 'a')
+            .hover(transitions.textFocusOn, transitions.textFocusOff);
+
+    }); //.each(transitions.textSlide); 
  
     $('h1') 
-        .css({left: '-30'}) 
-        .animate({opacity: 1.0, left: '0'}, 
+        .css({'padding-right': '60px'}) 
+        .animate({opacity: 1.0, 'padding-right': '30px'}, 
             'slow', 
             'swing', 
-        ); 
- 
-    setTimeout(function () { 
-        $('a').each(transitions.textSlide); 
-    }, 200); 
+        );
+
+    $('a')
+        .each(function (index) {
+            var $self = $(this).css({opacity: 0.0});
+            setTimeout(function () {
+                $self.css({opacity: 0.6});
+            }, (index+1) * 100);
+        });
  
 };

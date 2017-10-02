@@ -14,49 +14,81 @@
   width: 100%;
   z-index: -1; }
 
-.splash {
-  float: left;
+#center {
+  position: absolute;
   width: 50%;
-  height: 100%;
-  margin: 0px; }
-  .splash h1 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+  #center #title {
     position: relative;
-    color: #131115;
-    opacity: 0;
-    font-size: 3em;
-    font-family: "Lato-Light";
-    font-weight: normal;
-    text-align: right;
-    padding-right: 30px;
-    padding-top: 26%; }
-
-.splash2 {
-  width: 50%;
-  height: 100%;
-  margin: 0;
-  float: left; }
-  .splash2 .tabs {
+    height: 200px;
+    width: 50%;
+    line-height: 200px;
+    float: left; }
+    #center #title h1 {
+      color: #131115;
+      opacity: 0;
+      font-size: 3em;
+      font-family: "Lato-Light";
+      font-weight: normal;
+      text-align: right;
+      margin: 0px;
+      padding-right: calc($spad+30px); }
+  #center #tabs {
+    position: relative;
     float: left;
-    width: 5%;
-    height: 20%;
-    margin: 22% 0;
-    padding-left: 0;
-    padding-right: 35%; }
-    .splash2 .tabs h3 {
+    width: 25%;
+    height: 100%; }
+    #center #tabs h3 {
+      position: relative;
       border-left: 1px solid black;
-      padding: 1em 5em 1em 30px;
+      padding: 1.2em 2em 1.2em 30px;
       margin: 0;
       border-color: rgba(19, 17, 21, 0.4);
       font-family: "Lato-Thin";
-      font-weight: normal; }
-      .splash2 .tabs h3:nth-child(2n) {
+      font-weight: normal;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      transition: all 0.5s;
+      cursor: pointer;
+      box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
+      -webkit-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
+      -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
+      -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
+      -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0); }
+      #center #tabs h3:nth-child(2n) {
         border-top: 1px solid black;
         border-bottom: 1px solid black;
         border-color: rgba(19, 17, 21, 0.4); }
-    .splash2 .tabs a {
+    #center #tabs .h3Tr {
+      box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
+      -webkit-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
+      -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
+      -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
+      -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3); }
+    #center #tabs .aTr {
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      transition: all 0.5s;
+      transform: translate(10px, 0px);
+      opacity: 1;
+      color: FF9800; }
+    #center #tabs a {
       position: relative;
+      width: 100%;
+      display: inline-block;
       text-decoration: none;
       color: #131115;
-      opacity: 0; }
+      opacity: 0;
+      -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      transition: all 0.5s; }
 
 /*# sourceMappingURL=home.css.map */
