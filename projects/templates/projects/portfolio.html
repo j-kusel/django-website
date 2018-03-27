@@ -7,11 +7,13 @@
   </head>
   <body>
     <div class='page'>
+      <!--
       <div class='col1'>
         <div class='bot'>
           <h3><a href='/'>home</a></h3>
         </div>
       </div>
+      -->
       <div class='col2'>
         <div class='bar'>
           <ul>
@@ -21,21 +23,23 @@
           </ul>
         </div>
         <div class='mainbox'>
-          {% for proj in projs %}
-            <h2>{{ proj.title }}</h2>
-            {% if proj.year %}
-              <h4>{{ proj.year }}</h4>
-            {% endif %}
-            <h3>{{ proj.description }}</h3>
-            <ul>
-              {% if proj.extlink %}
-                <li><a href='{{ proj.extlink }}'>{{ proj.linktype }}</a></li>
+          <div class='subbox'>
+            {% for proj in projs %}
+              <h2>{{ proj.title }}</h2>
+              {% if proj.year %}
+                <h4>{{ proj.year }}</h4>
               {% endif %}
-              {% if proj.score %}
-                <li><a href='{{ proj.score.url }}'>score</a></li>
-              {% endif %}
-            </ul>
-          {% endfor %}
+              <h3>{{ proj.description }}</h3>
+              <ul>
+                {% if proj.extlink %}
+                  <li><a href='{{ proj.extlink }}'>{{ proj.linktype }}</a></li>
+                {% endif %}
+                {% if proj.score %}
+                  <li><a href='{{ proj.score.url }}'>score</a></li>
+                {% endif %}
+              </ul>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>

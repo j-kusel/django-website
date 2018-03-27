@@ -7,6 +7,26 @@ $spad: 30px
   -webkit-transition: $args
   transition: $args
 
+=transitions($speed)
+  -webkit-transition: all ($speed)
+  -moz-transition: all ($speed)
+  -ms-transition: all ($speed)
+  -o-transition: all ($speed)
+  transition: all ($speed)
+
+=nudge($x:0px, $y:0px)
+  transform: translate($x, $y)
+
+=focus($end)
+  opacity: $end
+
+=insets($final)
+  box-shadow: $final
+  -webkit-box-shadow: $final
+  -moz-box-shadow: $final
+  -ms-box-shadow: $final
+  -o-box-shadow: $final
+
 =scroll($wid)
   ::-webkit-scrollbar
     width: $wid
@@ -86,10 +106,15 @@ $spad: 30px
 
   .col2
     position: absolute
+    left: 50%
+    transform: translate(-50%, 0%)
     height: 62%
     width: 30%
-    left: 34%
     z-index: 1
+
+    padding-bottom: 50px
+    border-left: 1px solid
+    +bfog(0.4)
 
     .bar
       position: relative
@@ -113,44 +138,66 @@ $spad: 30px
       position: relative
       width: 100%
       height: 77%
-      padding-left: $spad
-      padding-right: $spad
-      padding-top: $spad
-      overflow: auto
-      background-color: rgba(185,183,185,.2)
-      h2
-        font-family: 'Lato-Light'
-        font-weight: 600
-        margin-bottom: 1%
-        display: inline
+      
+      
+      padding-right: 100px
+      border-bottom: 1px solid
+      +bfog(0.4)
 
-      h3
-        font-family: 'Lato-Thin'
-        font-weight: 100
-        font-size: 1em
-        margin-top: 1%
-        margin-bottom: 1%
+      .subbox
+        position: relative
+        float: right
+        clear: left
+        overflow-y: scroll
+        overflow-x: hidden
 
-      h4
-        font-family: 'Lato-Thin'
-        font-weight: 100
-        font-size: 1em
-        opacity: .2
-        margin-top: 1%
-        margin-bottom: 1%
-        padding-left: 2%
-        display: inline
+        padding-left: $spad
+        padding-right: $spad
+        padding-top: $spad
 
-      ul
-        padding-left: 0
-        margin-top: 3%
-        li
+        background-color: rgba(185,183,185,.2)
+
+        h2
+          font-family: 'Lato-Light'
+          font-weight: 600
+          margin-bottom: 1%
           display: inline
-          padding-right: 10%
-      a
-        +unlink
-        +tfog(.4, .9)
-        font-family: 'Lato-Thin'
-        font-weight: normal
-        font-size: .75em
+
+        h3
+          font-family: 'Lato-Thin'
+          font-weight: 100
+          font-size: 1em
+          margin-top: 1%
+          margin-bottom: 1%
+          
+
+        .h3tr
+          +transitions(0.5s)
+          +insets(inset 0px -10px 10px -10px rgba(100, 100, 100, 0.3))
+
+        h4
+          font-family: 'Lato-Thin'
+          font-weight: 100
+          font-size: 1em
+          opacity: .2
+          margin-top: 1%
+          margin-bottom: 1%
+          padding-left: 2%
+          display: inline
+
+        ul
+          padding-left: 0
+          margin-top: 3%
+          li
+            display: inline
+            padding-right: 10%
+            +bfog(.4)
+            +transitions(0.5s)
+            +insets(inset 0px -10px 10px -10px rgba(100, 100, 100, 0.0))
+        a
+          +unlink
+          +tfog(.4, .9)
+          font-family: 'Lato-Thin'
+          font-weight: normal
+          font-size: .75em
 
