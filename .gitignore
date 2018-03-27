@@ -13,3 +13,4 @@ fabsec.py
 passwords.py
 .sass-cache/*
 static/
+*.bak
