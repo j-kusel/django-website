@@ -39,24 +39,24 @@
       text-align: right;
       margin: 0px;
       padding-right: calc($spad+30px); }
+  #center #smalltitle {
+    display: none; }
+    @media screen and (max-width: 768px) {
+      #center #smalltitle {
+        display: block;
+        color: #131115;
+        float: left;
+        font-size: 1.5em;
+        padding: 1.2em 2em 1.2em 30px;
+        font-family: "Lato-Light";
+        font-weight: normal;
+        text-align: left;
+        margin: 0px; } }
   #center #tabs {
     position: relative;
     float: left;
     width: 25%;
     height: 100%; }
-    #center #tabs #smalltitle {
-      display: none; }
-      @media screen and (max-width: 768px) {
-        #center #tabs #smalltitle {
-          display: block;
-          color: #131115;
-          float: left;
-          font-size: 1.5em;
-          padding: 1.2em 2em 1.2em 30px;
-          font-family: "Lato-Light";
-          font-weight: normal;
-          text-align: left;
-          margin: 0px; } }
     #center #tabs h3 {
       position: relative;
       border-left: 1px solid black;
@@ -75,7 +75,7 @@
       -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0); }
-      #center #tabs h3:nth-child(3n) {
+      #center #tabs h3:nth-child(2n) {
         min-width: 75px;
         border-top: 1px solid black;
         border-bottom: 1px solid black;
