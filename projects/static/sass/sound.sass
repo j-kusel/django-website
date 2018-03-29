@@ -1,39 +1,4 @@
-$bline: 1px solid black
-$spad: 30px
-
-=transition($args...)
-  -moz-transition: $args
-  -o-transition: $args
-  -webkit-transition: $args
-  transition: $args
-
-=scroll($wid)
-  ::-webkit-scrollbar
-    width: $wid
-  ::-o-scrollbar
-    width: $wid
-  ::-moz-scrollbar
-    width: $wid
-
-
-=bfog($opac)
-  border-color: rgba(19,17,21,$opac)
-
-=tfog($opac, $hov)
-  color: rgba(87,83,88,$opac)
-  +transition(color .5s ease)
-  &:hover
-    color: rgba(19,17,21,$hov)
-
-=wfog($hov, $opac)
-  color: rgba(255,255,255,$opac)
-  +transition(opacity .3s ease)
-  &:hover
-    opacity: $hov
-
-
-=unlink
-  text-decoration: none
+@import 'util/_index.sass'
 
 @font-face
   font-family: 'Lato-Hairline'
@@ -50,6 +15,7 @@ $spad: 30px
 .page
   background-image: url('https://scproxy-prod.adobecc.com/api?X-Location=https%3A%2F%2Fcc-us1-prod.adobesc.com%2Fapi%2Fv1%2Fassets%2F7f6e1280-4ef4-4797-8296-454af9ff535a%2Frenditions%2Fjpg%2F1200?&link=2e4c8927-34fb-4d7f-7559-398721d9a079') 
   background-size: 100% 100%
+  background-repeat: repeat
   height: 100%
   width: 100%
   z-index: -1
@@ -60,7 +26,11 @@ $spad: 30px
     width: 33%
     border-right: $bline
     +bfog(.5)
+    @media screen and (max-width: 768px)
+      display: none
+      width: 0%
     .bot
+
       position: absolute
       bottom: 0
       margin-left: 70%
@@ -89,19 +59,31 @@ $spad: 30px
     height: 62%
     width: 30%
     left: 34%
+    @media screen and (max-width: 768px)
+      left: 3%
+      width: 90%
+      height: 100%
     z-index: 1
 
     .bar
       position: relative
+
+
       ul
-        text-align: center
-        width: 100%
+        height: 2em
+        //text-align: center
+        //width: 100%
+        margin: 0px
         margin-top: 13%
+        padding-left: 5%
       li
+
         display: inline
         float: left
-        width: 33%
+        width: 30%
         margin-bottom: 2%
+        &:first-child
+          width: 10%
       a
         text-align: center
         +unlink
@@ -110,14 +92,14 @@ $spad: 30px
         font-weight: normal
 
     .mainbox
+
       position: relative
-      width: 100%
-      height: 77%
-      padding-left: $spad
-      padding-right: $spad
-      padding-top: $spad
+      float: left
+      //width: 100%
+      //height: 77%
+      padding: 3% 3% 0% 3%
       overflow: auto
-      background-color: rgba(185,183,185,.2)
+      //background-color: rgba(185,183,185,.2)
       h2
         font-family: 'Lato-Light'
         font-weight: 600
@@ -142,9 +124,11 @@ $spad: 30px
         display: inline
 
       ul
+
         padding-left: 0
         margin-top: 3%
         li
+
           display: inline
           padding-right: 10%
       a
@@ -153,4 +137,5 @@ $spad: 30px
         font-family: 'Lato-Thin'
         font-weight: normal
         font-size: .75em
+
 

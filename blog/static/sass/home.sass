@@ -1,10 +1,4 @@
-$bline: 1px solid black
-$spad: 30px
-
-
-
-=bfog($opac)
-  border-color: rgba(19,17,21,$opac)
+@import 'util/_index.sass'
 
 @font-face
   font-family: 'Lato-Hairline'
@@ -18,9 +12,6 @@ $spad: 30px
   font-family: 'Lato-Light'
   src: url('../fonts/Lato-Light.ttf')
 
-=unlink
-  text-decoration: none
-
 .page
   background-image: url('https://scproxy-prod.adobecc.com/api?X-Location=https%3A%2F%2Fcc-us1-prod.adobesc.com%2Fapi%2Fv1%2Fassets%2F7f6e1280-4ef4-4797-8296-454af9ff535a%2Frenditions%2Fjpg%2F1200?&link=2e4c8927-34fb-4d7f-7559-398721d9a079') 
   background-size: 100% 100%
@@ -28,52 +19,89 @@ $spad: 30px
   width: 100%
   z-index: -1
 
-.splash
-  float: left
+#center
+  position: absolute
   width: 50%
-  height: 100%
-  margin: 0px
- 
-  h1
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+
+  #title
     position: relative
-    color: rgb(19, 17, 21)
-    opacity: 0
-    font-size: 3em
-    font-family: 'Lato-Light'
-    font-weight: normal
-    text-align: right
-    padding-right: $spad
-    padding-top: 26%
-
-.splash2
-  width: 50%
-  height: 100%
-  margin: 0
-  float: left
-
-  .tabs
+    height: 200px
+    width: 50%
+    line-height: 200px
     float: left
-    width: 5%
-    height: 20%
-    margin: 22% 0
-    padding-left: 0
-    padding-right: 35%
+    @media screen and (max-width: 768px)
+      display: none
+
+    h1
+      color: #131115
+      float: right
+      opacity: 0
+      font-size: 3em
+      font-family: "Lato-Light"
+      font-weight: normal
+      text-align: right
+      margin: 0px
+      padding-right: calc($spad+30px)
+
+
+  #tabs
+    position: relative
+    float: left
+    width: 25%
+    height: 100%
+
+    #smalltitle
+      display: none
+
+      @media screen and (max-width: 768px)
+        display: block
+        color: #131115
+        float: left
+        font-size: 1.5em
+        padding: 1.2em 2em 1.2em 30px
+       
+        font-family: "Lato-Light"
+        font-weight: normal
+        text-align: left
+        margin: 0px
 
     h3
-      border-left: $bline  
-      padding: 1em 5em 1em $spad
+      position: relative
+      border-left: 1px solid black
+      padding: 1.2em 2em 1.2em 30px
       margin: 0
-      +bfog(.4)
-      font-family: 'Lato-Thin'
+      border-color: rgba(19, 17, 21, 0.4)
+      font-family: "Lato-Thin"
       font-weight: normal
-      &:nth-child(2n)
-        border-top: $bline 
-        border-bottom: $bline
-        +bfog(0.4)
- 
+      +transition(all 0.5s)
+      cursor: pointer
+      +shadows(inset 10px 0px 10px -10px rgba(100, 100, 100, 0))
+
+      &:nth-child(3n)
+        min-width: 75px
+        border-top: 1px solid black
+        border-bottom: 1px solid black
+        border-color: rgba(19, 17, 21, 0.4)
+
+    .h3Tr
+      +shadows(inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3))
+
     a
       position: relative
-      +unlink
+      width: 100%
+      display: inline-block
+      text-decoration: none
       color: #131115
-      opacity: 0.0
+      opacity: 0
+      +transition(all 0.5s)
+
+    .aTr
+      //+transition(all 0.5s)
+      +nudge(10px, 0px)
+      opacity: 1
+      color: #FF9800
+
 

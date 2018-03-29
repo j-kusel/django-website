@@ -26,8 +26,12 @@
     width: 50%;
     line-height: 200px;
     float: left; }
+    @media screen and (max-width: 768px) {
+      #center #title {
+        display: none; } }
     #center #title h1 {
       color: #131115;
+      float: right;
       opacity: 0;
       font-size: 3em;
       font-family: "Lato-Light";
@@ -40,6 +44,19 @@
     float: left;
     width: 25%;
     height: 100%; }
+    #center #tabs #smalltitle {
+      display: none; }
+      @media screen and (max-width: 768px) {
+        #center #tabs #smalltitle {
+          display: block;
+          color: #131115;
+          float: left;
+          font-size: 1.5em;
+          padding: 1.2em 2em 1.2em 30px;
+          font-family: "Lato-Light";
+          font-weight: normal;
+          text-align: left;
+          margin: 0px; } }
     #center #tabs h3 {
       position: relative;
       border-left: 1px solid black;
@@ -48,10 +65,9 @@
       border-color: rgba(19, 17, 21, 0.4);
       font-family: "Lato-Thin";
       font-weight: normal;
-      -webkit-transition: all 0.5s;
       -moz-transition: all 0.5s;
-      -ms-transition: all 0.5s;
       -o-transition: all 0.5s;
+      -webkit-transition: all 0.5s;
       transition: all 0.5s;
       cursor: pointer;
       box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
@@ -59,7 +75,8 @@
       -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0); }
-      #center #tabs h3:nth-child(2n) {
+      #center #tabs h3:nth-child(3n) {
+        min-width: 75px;
         border-top: 1px solid black;
         border-bottom: 1px solid black;
         border-color: rgba(19, 17, 21, 0.4); }
@@ -69,15 +86,6 @@
       -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
       -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3);
       -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0.3); }
-    #center #tabs .aTr {
-      -webkit-transition: all 0.5s;
-      -moz-transition: all 0.5s;
-      -ms-transition: all 0.5s;
-      -o-transition: all 0.5s;
-      transition: all 0.5s;
-      transform: translate(10px, 0px);
-      opacity: 1;
-      color: FF9800; }
     #center #tabs a {
       position: relative;
       width: 100%;
@@ -85,10 +93,13 @@
       text-decoration: none;
       color: #131115;
       opacity: 0;
-      -webkit-transition: all 0.5s;
       -moz-transition: all 0.5s;
-      -ms-transition: all 0.5s;
       -o-transition: all 0.5s;
+      -webkit-transition: all 0.5s;
       transition: all 0.5s; }
+    #center #tabs .aTr {
+      transform: translate(10px, 0px);
+      opacity: 1;
+      color: #FF9800; }
 
 /*# sourceMappingURL=home.css.map */
