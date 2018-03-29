@@ -7,6 +7,10 @@
 @font-face {
   font-family: "Lato-Light";
   src: url("../fonts/Lato-Light.ttf"); }
+@media only screen and (max-device-width: 768px) {
+  body {
+    font-size: 3.5em; } }
+
 .page {
   background-image: url("https://scproxy-prod.adobecc.com/api?X-Location=https%3A%2F%2Fcc-us1-prod.adobesc.com%2Fapi%2Fv1%2Fassets%2F7f6e1280-4ef4-4797-8296-454af9ff535a%2Frenditions%2Fjpg%2F1200?&link=2e4c8927-34fb-4d7f-7559-398721d9a079");
   background-size: 100% 100%;
@@ -20,7 +24,7 @@
     width: 33%;
     border-right: 1px solid black;
     border-color: rgba(19, 17, 21, 0.5); }
-    @media screen and (max-width: 768px) {
+    @media only screen and (max-device-width: 768px) {
       .page .col1 {
         display: none;
         width: 0%; } }
@@ -57,11 +61,12 @@
     left: 34%;
     overflow: scroll;
     z-index: 1; }
-    @media screen and (max-width: 768px) {
+    @media only screen and (max-device-width: 768px) {
       .page .col2 {
         left: 3%;
-        width: 90%;
-        height: 100%; } }
+        width: 93%;
+        height: 100%;
+        background-color: rgba(100, 100, 100, 0.1); } }
     .page .col2 .bar {
       position: relative; }
       .page .col2 .bar ul {
