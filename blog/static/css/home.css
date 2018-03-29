@@ -7,6 +7,10 @@
 @font-face {
   font-family: "Lato-Light";
   src: url("../fonts/Lato-Light.ttf"); }
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 5em; } }
+
 .page {
   background-image: url("https://scproxy-prod.adobecc.com/api?X-Location=https%3A%2F%2Fcc-us1-prod.adobesc.com%2Fapi%2Fv1%2Fassets%2F7f6e1280-4ef4-4797-8296-454af9ff535a%2Frenditions%2Fjpg%2F1200?&link=2e4c8927-34fb-4d7f-7559-398721d9a079");
   background-size: 100% 100%;

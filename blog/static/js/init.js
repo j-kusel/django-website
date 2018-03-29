@@ -15,7 +15,7 @@ var init = function() {
         .css({'padding-right': '60px'}) 
         .animate({opacity: 1.0, 'padding-right': '30px'}, 
             'slow', 
-            'swing', 
+            'swing' 
         );
 
     $('a')
