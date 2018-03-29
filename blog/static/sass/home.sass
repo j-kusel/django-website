@@ -13,7 +13,7 @@
   src: url('../fonts/Lato-Light.ttf')
 
 body
-  @media screen and (max-device-width: 768px)
+  @media only screen and (max-device-width: 768px)
     font-size: 5em
 
 .page
@@ -29,6 +29,9 @@ body
   top: 50%
   left: 50%
   transform: translate(-50%, -50%)
+  @media only screen and (max-device-width: 768px)
+    left: 30%
+    top: 30%
 
   #title
     position: relative
@@ -36,7 +39,7 @@ body
     width: 50%
     line-height: 200px
     float: left
-    @media screen and (max-width: 768px)
+    @media only screen and (max-device-width: 768px)
       display: none
 
     h1
@@ -55,12 +58,12 @@ body
   #smalltitle
     display: none
 
-    @media screen and (max-width: 768px)
+    @media only screen and (max-device-width: 768px)
       display: block
       color: #131115
       float: left
       font-size: 1.5em
-      padding: 1.2em 2em 1.2em 30px
+      padding: 1.8em 2em .6em 30px
      
       font-family: "Lato-Light"
       font-weight: normal
@@ -77,6 +80,9 @@ body
       position: relative
       border-left: 1px solid black
       padding: 1.2em 2em 1.2em 30px
+      @media only screen and (max-device-width: 768px)
+        padding: .4em 2em .6em 30px
+
       margin: 0
       border-color: rgba(19, 17, 21, 0.4)
       font-family: "Lato-Thin"

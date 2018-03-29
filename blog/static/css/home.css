@@ -7,7 +7,7 @@
 @font-face {
   font-family: "Lato-Light";
   src: url("../fonts/Lato-Light.ttf"); }
-@media screen and (max-device-width: 768px) {
+@media only screen and (max-device-width: 768px) {
   body {
     font-size: 5em; } }
 
@@ -24,13 +24,17 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
+  @media only screen and (max-device-width: 768px) {
+    #center {
+      left: 30%;
+      top: 30%; } }
   #center #title {
     position: relative;
     height: 200px;
     width: 50%;
     line-height: 200px;
     float: left; }
-    @media screen and (max-width: 768px) {
+    @media only screen and (max-device-width: 768px) {
       #center #title {
         display: none; } }
     #center #title h1 {
@@ -45,13 +49,13 @@
       padding-right: calc($spad+30px); }
   #center #smalltitle {
     display: none; }
-    @media screen and (max-width: 768px) {
+    @media only screen and (max-device-width: 768px) {
       #center #smalltitle {
         display: block;
         color: #131115;
         float: left;
         font-size: 1.5em;
-        padding: 1.2em 2em 1.2em 30px;
+        padding: 1.8em 2em 0.6em 30px;
         font-family: "Lato-Light";
         font-weight: normal;
         text-align: left;
@@ -79,6 +83,9 @@
       -moz-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -ms-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0);
       -o-box-shadow: inset 10px 0px 10px -10px rgba(100, 100, 100, 0); }
+      @media only screen and (max-device-width: 768px) {
+        #center #tabs h3 {
+          padding: 0.4em 2em 0.6em 30px; } }
       #center #tabs h3:nth-child(2n) {
         min-width: 75px;
         border-top: 1px solid black;
