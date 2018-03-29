@@ -7,7 +7,7 @@
 @font-face {
   font-family: "Lato-Light";
   src: url("../fonts/Lato-Light.ttf"); }
-@media screen and (max-width: 768px) {
+@media screen and (max-device-width: 768px) {
   body {
     font-size: 5em; } }
 
