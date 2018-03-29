@@ -55,6 +55,7 @@
     height: 62%;
     width: 30%;
     left: 34%;
+    overflow: scroll;
     z-index: 1; }
     @media screen and (max-width: 768px) {
       .page .col2 {
